@@ -8,7 +8,7 @@ dotenv.config();
 
 const app = express();
 
-connectDB();
+await connectDB();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));

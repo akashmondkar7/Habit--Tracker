@@ -1,13 +1,17 @@
 import mongoose from "mongoose";
-import { configDotenv } from "dotenv";
 
 const connectDB = async () => {
-try {
+  try {
+    if (!process.env.MONGO_URI) {
+      throw new Error("MONGO_URI is missing");
+    }
+
     await mongoose.connect(process.env.MONGO_URI);
 
     console.log("MongoDB Connected Successfully");
   } catch (error) {
-    console.error("MongoDB Connection Error", error);
+    console.error("MongoDB Connection Error:", error.message);
+    process.exit(1);
   }
 };
 
