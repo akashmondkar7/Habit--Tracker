@@ -3,8 +3,8 @@ import express from "express";
 import {
   home,
   createHabit,
-  weeklyView,
   toggleStatus,
+  deleteHabit,
 } from "../controllers/habitController.js";
 
 const router = express.Router();
@@ -15,10 +15,10 @@ router.get("/", home);
 // Create Habit
 router.post("/create", createHabit);
 
-// Weekly View
-router.get("/weekly/:id", weeklyView);
-
 // Toggle Status
 router.get("/toggle/:habitId/:date", toggleStatus);
+
+// Delete Habit
+router.get("/delete/:id", deleteHabit);
 
 export default router;

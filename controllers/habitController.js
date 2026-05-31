@@ -45,24 +45,6 @@ export const createHabit = async (req, res) => {
   }
 };
 
-// Show 7-day habit details
-export const weeklyView = async (req, res) => {
-  try {
-    const habit = await Habit.findById(req.params.id);
-
-    if (!habit) {
-      return res.status(404).send("Habit Not Found");
-    }
-
-    res.render("weekly", {
-      habit,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Server Error");
-  }
-};
-
 // Toggle habit status
 export const toggleStatus = async (req, res) => {
   try {
@@ -93,7 +75,23 @@ export const toggleStatus = async (req, res) => {
 
     await habit.save();
 
-    res.redirect(`/weekly/${habitId}`);
+    res.redirect("/");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
+};
+
+// Delete habit
+export const deleteHabit = async (req, res) => {
+  try {
+    const habit = await Habit.findByIdAndDelete(req.params.id);
+
+    if (!habit) {
+      return res.status(404).send("Habit Not Found");
+    }
+
+    res.redirect("/");
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");

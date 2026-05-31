@@ -1,32 +1,349 @@
-body {
-  font-family: Arial, sans-serif;
-  max-width: 800px;
-  margin: 40px auto;
+:root {
+    --background: #f5f7fb;
+    --surface: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --done: #15803d;
+    --done-background: #dcfce7;
+    --notdone: #dc2626;
+    --notdone-background: #fee2e2;
+    --none: #6b7280;
+    --none-background: #f3f4f6;
+    --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
 }
 
-form {
-  margin-bottom: 30px;
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+}
+
+.dashboard {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 48px 0 32px;
+}
+
+.dashboard-header {
+    margin-bottom: 24px;
+}
+
+h1,
+h2,
+h3,
+p {
+    margin: 0;
+}
+
+h1 {
+    margin-top: 2px;
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: -0.06em;
+}
+
+h2 {
+    font-size: 1.3rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+}
+
+.eyebrow,
+.habit-label {
+    color: var(--primary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.subtitle,
+.add-habit-panel p {
+    margin-top: 5px;
+    color: var(--muted);
+}
+
+.add-habit-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+
+.habit-form {
+    display: flex;
+    flex: 1;
+    gap: 10px;
+    max-width: 560px;
+}
+
+input,
+button {
+    border-radius: 9px;
+    font: inherit;
 }
 
 input {
-  padding: 10px;
+    min-width: 0;
+    flex: 1;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
 }
 
 button {
-  padding: 10px;
-  cursor: pointer;
+    padding: 12px 18px;
+    border: 0;
+    background: var(--primary);
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.habit {
-  border: 1px solid #ccc;
-  padding: 15px;
-  margin-bottom: 10px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
 }
 
-a {
-  text-decoration: none;
+.habits-section {
+    margin-top: 36px;
+}
+
+.section-heading,
+.habit-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.section-heading {
+    margin-bottom: 15px;
+}
+
+.habit-count {
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: #e0e7ff;
+    color: #3730a3;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.habits-list {
+    display: grid;
+    gap: 18px;
+}
+
+.habit-card,
+.empty-state {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+
+.habit-card {
+    padding: 20px;
+}
+
+.habit-card-header {
+    margin-bottom: 18px;
+}
+
+.habit-card h3 {
+    margin-top: 3px;
+}
+
+.delete-button {
+    padding: 7px 11px;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    color: #b91c1c;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.delete-button:hover {
+    border-color: #fca5a5;
+    background: #fef2f2;
+}
+
+.week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.day-box {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 11px 6px;
+    border: 1px solid transparent;
+    border-radius: 11px;
+    color: inherit;
+    text-align: center;
+    text-decoration: none;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.day-box:hover {
+    box-shadow: 0 7px 14px rgba(15, 23, 42, 0.1);
+    transform: translateY(-3px);
+}
+
+.day-name,
+.status-text {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.date-number {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.status-icon {
+    display: grid;
+    width: 26px;
+    height: 26px;
+    place-items: center;
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.done {
+    border-color: #bbf7d0;
+    background: var(--done-background);
+    color: var(--done);
+}
+
+.done .status-icon,
+.done-dot {
+    background: var(--done);
+}
+
+.notdone {
+    border-color: #fecaca;
+    background: var(--notdone-background);
+    color: var(--notdone);
+}
+
+.notdone .status-icon,
+.notdone-dot {
+    background: var(--notdone);
+}
+
+.none {
+    border-color: #e5e7eb;
+    background: var(--none-background);
+    color: var(--none);
+}
+
+.none .status-icon,
+.none-dot {
+    background: var(--none);
+}
+
+.empty-state {
+    padding: 42px 20px;
+    color: var(--muted);
+    text-align: center;
+}
+
+.empty-state h3 {
+    margin-bottom: 4px;
+    color: var(--text);
+}
+
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 20px;
+    color: var(--muted);
+    font-size: 0.78rem;
+}
+
+.legend span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+@media (max-width: 700px) {
+    .dashboard {
+        width: min(100% - 20px, 580px);
+        padding-top: 28px;
+    }
+
+    .add-habit-panel,
+    .habit-form {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .habit-card {
+        padding: 14px;
+    }
+
+    .week-grid {
+        gap: 5px;
+    }
+
+    .day-box {
+        gap: 2px;
+        padding: 8px 2px;
+    }
+
+    .day-name,
+    .status-text {
+        font-size: 0.58rem;
+    }
+
+    .date-number {
+        font-size: 0.95rem;
+    }
+
+    .status-icon {
+        width: 22px;
+        height: 22px;
+        font-size: 0.85rem;
+    }
 }

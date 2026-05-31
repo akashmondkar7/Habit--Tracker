@@ -3,48 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Habit Tracker</title>
-
+    <title>Habit Tracker Dashboard</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+    <main class="dashboard">
+        <header class="dashboard-header">
+            <div>
+                <p class="eyebrow">Daily progress</p>
+                <h1>Habit Tracker</h1>
+                <p class="subtitle">Build consistency one day at a time.</p>
+            </div>
+        </header>
 
-    <h1>Habit Tracker</h1>
+        <section class="add-habit-panel" aria-labelledby="add-habit-title">
+            <div>
+                <h2 id="add-habit-title">Add a new habit</h2>
+                <p>Choose something small enough to repeat every day.</p>
+            </div>
 
-    <form action="/create" method="POST">
+            <form action="/create" method="POST" class="habit-form">
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="e.g. Read for 20 minutes"
+                    aria-label="Habit name"
+                    required
+                >
+                <button type="submit">Add Habit</button>
+            </form>
+        </section>
 
-        <input
-            type="text"
-            name="name"
-            placeholder="Enter Habit Name"
-            required
-        >
+        <section class="habits-section" aria-labelledby="habits-title">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">This week</p>
+                    <h2 id="habits-title">Your habits</h2>
+                </div>
+                <span class="habit-count"><%= habits.length %> <%= habits.length === 1 ? "habit" : "habits" %></span>
+            </div>
 
-        <button type="submit">
-            Add Habit
-        </button>
+            <% if (habits.length === 0) { %>
+                <div class="empty-state">
+                    <h3>No habits yet</h3>
+                    <p>Add your first habit above to start tracking your week.</p>
+                </div>
+            <% } %>
 
-    </form>
+            <div class="habits-list">
+                <% habits.forEach((habit) => { %>
+                    <article class="habit-card">
+                        <div class="habit-card-header">
+                            <div>
+                                <p class="habit-label">Weekly tracker</p>
+                                <h3><%= habit.name %></h3>
+                            </div>
 
-    <% if(habits.length === 0){ %>
+                            <a
+                                href="/delete/<%= habit._id %>"
+                                class="delete-button"
+                                aria-label="Delete <%= habit.name %>"
+                                onclick="return confirm('Delete this habit?');"
+                            >
+                                Delete
+                            </a>
+                        </div>
 
-        <h3>No Habits Found</h3>
+                        <div class="week-grid">
+                            <% habit.records.forEach((record) => { %>
+                                <% const recordDate = new Date(`${record.date}T00:00:00`); %>
+                                <a
+                                    href="/toggle/<%= habit._id %>/<%= record.date %>"
+                                    class="day-box <%= record.status %>"
+                                    aria-label="<%= recordDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) %>: <%= record.status %>"
+                                    title="Click to update status"
+                                >
+                                    <span class="day-name">
+                                        <%= recordDate.toLocaleDateString("en-US", { weekday: "short" }) %>
+                                    </span>
+                                    <span class="date-number"><%= recordDate.getDate() %></span>
+                                    <span class="status-icon" aria-hidden="true">
+                                        <% if (record.status === "done") { %>
+                                            &#10003;
+                                        <% } else if (record.status === "notdone") { %>
+                                            &#10005;
+                                        <% } else { %>
+                                            &#8212;
+                                        <% } %>
+                                    </span>
+                                    <span class="status-text">
+                                        <%= record.status === "notdone" ? "Not done" : record.status %>
+                                    </span>
+                                </a>
+                            <% }) %>
+                        </div>
+                    </article>
+                <% }) %>
+            </div>
+        </section>
 
-    <% } %>
-
-    <% habits.forEach((habit)=>{ %>
-
-        <div class="habit">
-
-            <h3><%= habit.name %></h3>
-
-            <a href="/weekly/<%= habit._id %>">
-                View Week
-            </a>
-
+        <div class="legend" aria-label="Status legend">
+            <span><i class="legend-dot done-dot"></i>Done</span>
+            <span><i class="legend-dot notdone-dot"></i>Not done</span>
+            <span><i class="legend-dot none-dot"></i>None</span>
         </div>
-
-    <% }) %>
-
+    </main>
 </body>
 </html>
