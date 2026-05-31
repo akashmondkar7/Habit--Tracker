@@ -3,12 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Habit Tracker</title>
+
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+
     <h1>Habit Tracker</h1>
 
-<p>EJS Working Successfully</p>
-    
+    <form action="/create" method="POST">
+
+        <input
+            type="text"
+            name="name"
+            placeholder="Enter Habit Name"
+            required
+        >
+
+        <button type="submit">
+            Add Habit
+        </button>
+
+    </form>
+
+    <% if(habits.length === 0){ %>
+
+        <h3>No Habits Found</h3>
+
+    <% } %>
+
+    <% habits.forEach((habit)=>{ %>
+
+        <div class="habit">
+
+            <h3><%= habit.name %></h3>
+
+            <a href="/weekly/<%= habit._id %>">
+                View Week
+            </a>
+
+        </div>
+
+    <% }) %>
+
 </body>
 </html>
