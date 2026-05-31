@@ -34,4 +34,4 @@ const habitSchema = new mongoose.Schema(
 const Habit = mongoose.model("Habit", habitSchema);
 
 // Export Model
-export default habit;
+export default Habit;
